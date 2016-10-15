@@ -52,12 +52,12 @@ public class RecruiteeMainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 String tmp1 = result.getContents();
-                String tmp2[] = tmp1.split(" ");
+                String tmp2[] = tmp1.split(",");
 
-                if (tmp2.length != 3)
+                if (tmp2.length != 4)
                     Toast.makeText(this, "Invalid QR Code", Toast.LENGTH_LONG).show();
                 else {
-                    EncryptData ri = new EncryptData(tmp2[0], tmp2[1], tmp2[2]);
+                    EncryptData ri = new EncryptData(tmp2[0], tmp2[1], tmp2[2], tmp2[3]);
                     resumeList.add(ri);
                     mAdapter.notifyDataSetChanged();
                 }

@@ -17,6 +17,7 @@ import java.util.List;
 
 public class RecruiteeMainActivity extends AppCompatActivity {
     static final String EXTRA_QR_STRING = "com.example.hackwesternapp.EXTRA_QR_STRING";
+    static final String EXTRA_NAME = "com.example.hackwesternapp.EXTRA_NAME";
 
     private List<EncryptData> resumeList;
     private RecyclerView recyclerView;

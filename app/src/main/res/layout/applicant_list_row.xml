@@ -14,11 +14,12 @@
     <TextView
         android:id="@+id/title"
         android:textColor="@color/textColorSecondary"
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Sample Company" />
 
     <TextView
         android:id="@+id/name"
@@ -27,6 +28,7 @@
         android:textStyle="normal"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Sample Name" />
 
 </LinearLayout>

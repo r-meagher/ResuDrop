@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -19,9 +20,13 @@ public class ShowQrCodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_qr_code);
 
         ImageView imageView = (ImageView) findViewById(R.id.imageViewQrCode);
+        TextView textView = (TextView) findViewById(R.id.textViewCompanyName);
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(RecruiteeMainActivity.EXTRA_QR_STRING);
+        String name = intent.getStringExtra(RecruiteeMainActivity.EXTRA_NAME);
+
+        textView.setText("Hello! I'm " + name);
 
         try {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">HackWesternApp</string>
+
+    <string name="splash_prompt">I am a:</string>
+    <string name="select_recruiter">Recruiter</string>
+    <string name="select_recruitee">Recruitee</string>
+
+    <string name="recruiter_greeting">Hello! Ready to recruit?</string>
+    <string name="recruiter_scan_qr">Scan QR Code</string>
+    <string name="qr_code_scan">QR Code Scanned!</string>
+
+    <string name="recruitee_greeting">Hello! Ready to get hired?</string>
+    <string name="send_qr_code">Send QR Code</string>
+    <string name="import_resume">Import resume</string>
+
+    <string name="qr_display_description">Displays QR Codes</string>
+</resources>

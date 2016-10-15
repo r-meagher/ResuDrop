@@ -3,9 +3,10 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
-    android:paddingStart="5dip"
-    android:paddingBottom="5dip"
-    android:paddingLeft="5dip"
-    android:paddingRight="5dip"
-    android:paddingTop="5dip"
-    android:textSize="20sp" />
+    android:textColor="@color/textColorPrimary"
+    android:paddingStart="10dip"
+    android:paddingBottom="10dip"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip"
+    android:paddingTop="10dip"
+    android:textSize="25sp" />

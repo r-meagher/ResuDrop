@@ -14,8 +14,5 @@ public class ViewApplicantActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String name = intent.getStringExtra(RecruiterMainActivity.APPLICANT_NAME);
-
-        TextView tv = (TextView) findViewById(R.id.textView);
-        tv.setText("Scanned " + name);
     }
 }

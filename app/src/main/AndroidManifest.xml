@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hackwesternapp">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -20,10 +21,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RecruiterMainActivity" />
-        <activity android:name=".RecruiteeMainActivity" />
-        <activity android:name=".ShowQrCodeActivity" />
-        <activity android:name=".ViewApplicantActivity"></activity>
+        <activity
+            android:name=".RecruiterMainActivity"
+            android:label="Recruiter Activity" />
+        <activity
+            android:name=".RecruiteeMainActivity"
+            android:label="Applicant Activity" />
+        <activity
+            android:name=".ShowQrCodeActivity"
+            android:label="Display QR Code" />
+        <activity
+            android:name=".ViewApplicantActivity"
+            android:label="View Applicant" />
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation" />
+        <activity android:name=".UploadResumeActivity"></activity>
     </application>
 
 </manifest>

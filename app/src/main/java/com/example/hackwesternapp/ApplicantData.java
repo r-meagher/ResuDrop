@@ -1,6 +1,6 @@
 package com.example.hackwesternapp;
 
-class ApplicantData {
+class ApplicantData implements Comparable<ApplicantData> {
     private String name;
     private String email;
     private int rating;
@@ -37,5 +37,15 @@ class ApplicantData {
 
     boolean isFavourite() {
         return favourite;
+    }
+
+    @Override
+    public int compareTo(ApplicantData ad) {
+        int c = Boolean.compare(favourite, ad.isFavourite());
+
+        if (c != 0)
+            return c;
+        else
+            return Integer.compare(rating, ad.getRating());
     }
 }

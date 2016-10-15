@@ -1,50 +1,46 @@
 package com.example.hackwesternapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.SortedList;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 
 public class RecruiterMainActivity extends AppCompatActivity {
     static final String APPLICANT_NAME = "com.example.hackwesternapp.APPLICANT_NAME";
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-
-    ArrayList<ApplicantData> applicantList;
-    ArrayList<String> names;
+    private List<ApplicantData> applicantList;
+    private RecyclerView recyclerView;
+    private RecruiterListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruiter_main);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recruiter_recycler_view);
 
+        recyclerView = (RecyclerView) findViewById(R.id.applicant_list_view);
         applicantList = new ArrayList<>();
-        names = new ArrayList<>();
 
-        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new RecruiterListAdapter((List) applicantList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
 
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(new ApplicantData[] {});
-        mRecyclerView.setAdapter(mAdapter);
+        addTestData();
+        mAdapter.notifyDataSetChanged();
     }
 
     public void scanQrCode(View view) {
@@ -70,6 +66,12 @@ public class RecruiterMainActivity extends AppCompatActivity {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    void addTestData() {
+        for (int i = 0; i < 100; i++) {
+            applicantList.add(new ApplicantData("Name " + i, "Email " + i));
         }
     }
 }

@@ -96,8 +96,12 @@ public class RecruiterMainActivity extends AppCompatActivity {
                 if (result.getContents() == null) {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
                 } else {
-                    String tmp1 = result.getContents(); // Used to store the results of the QR scan
-                    getData(tmp1);
+                    String tmp = result.getContents(); // Used to store the results of the QR scan
+
+                    if (tmp.indexOf(',') == -1)
+                        getData(tmp);
+                    else
+                        Toast.makeText(this, "Invalid QR Code", Toast.LENGTH_LONG).show();
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data);
@@ -136,7 +140,7 @@ public class RecruiterMainActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     newApplicant.setId(recruiterData.getObjectId());
-                    applicantList.add(newApplicant);
+                    addApplicant(newApplicant, applicantList);
                     mAdapter.notifyDataSetChanged();
                     viewApplicant(newApplicant);
                 } else {
@@ -162,5 +166,20 @@ public class RecruiterMainActivity extends AppCompatActivity {
 
     void viewApplicant(final ApplicantData newApplicant) {
         viewApplicant(newApplicant, 0);
+    }
+
+    void addApplicant(ApplicantData ad, List<ApplicantData> al) {
+        int i = 0;
+
+        while(i < al.size()) {
+            if (ad.compareTo(al.get(i)) >= 0) {
+                al.add(i, ad);
+                return;
+            }
+
+            i++;
+        }
+
+        al.add(ad);
     }
 }

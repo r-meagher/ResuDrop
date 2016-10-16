@@ -2,11 +2,14 @@ package com.example.hackwesternapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,19 +35,27 @@ public class RecruiterMainActivity extends AppCompatActivity {
     static final String UI_STRING = "com.example.hackwesternapp.UI_STRING";
     static final String PDF_URL = "com.example.hackwesternapp.PDF_URL";
 
+    static int fav;
+    static int notfav;
+
     final String pClass = "AccountData";
 
     private List<ApplicantData> applicantList;
     private RecyclerView recyclerView;
     private RecruiterListAdapter mAdapter;
 
-    private String uiString;
-    private String companyClass;
+    String uiString;
+    String companyClass;
+
+    int clickedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruiter_main);
+
+        fav = getResources().getIdentifier("com.example.hackwesternapp:drawable/ic_favourite_selected", null, null);
+        notfav = getResources().getIdentifier("com.example.hackwesternapp:drawable/ic_favourite_unselected", null, null);
 
         recyclerView = (RecyclerView) findViewById(R.id.applicant_list_view);
         applicantList = new ArrayList<>();
@@ -71,20 +82,29 @@ public class RecruiterMainActivity extends AppCompatActivity {
     // Get the results:
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+        Log.v("LOG", "RC: " + requestCode);
+        if (requestCode == 2) {
+            applicantList.get(clickedItem).setRating(data.getIntExtra(RATING, 0));
+            applicantList.get(clickedItem).setFavourite(data.getBooleanExtra(FAVOURITE, false));
+            mAdapter.notifyDataSetChanged();
+        }
+        else {
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (result != null) {
+                if (result.getContents() == null) {
+                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                } else {
+                    String tmp1 = result.getContents(); // Used to store the results of the QR scan
+                    getData(tmp1);
+                }
             } else {
-                String tmp1 = result.getContents(); // Used to store the results of the QR scan
-                getData(this, tmp1);
+                super.onActivityResult(requestCode, resultCode, data);
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    void getData(final Activity a, final String id) {
+    void getData(final String id) {
+        final Activity a = this;
         final ParseObject recruiterData = new ParseObject(companyClass);
         final ApplicantData newApplicant = new ApplicantData("", "");
 
@@ -96,7 +116,7 @@ public class RecruiterMainActivity extends AppCompatActivity {
                     newApplicant.setName(object.getString("Name"));
                     newApplicant.setEmail(object.getString("Email"));
                     newApplicant.setUrl(((ParseFile) object.get("data_pdf")).getUrl());
-                    pushToParse(a, recruiterData, newApplicant);
+                    pushToParse(recruiterData, newApplicant);
                 } else {
                     Toast.makeText(a, "Failed to get data", Toast.LENGTH_LONG).show();
                 }
@@ -104,7 +124,8 @@ public class RecruiterMainActivity extends AppCompatActivity {
         });
     }
 
-    void pushToParse(final Activity a, final ParseObject recruiterData, final ApplicantData newApplicant) {
+    void pushToParse(final ParseObject recruiterData, final ApplicantData newApplicant) {
+        final Activity a = this;
         recruiterData.put("Name", newApplicant.getName());
         recruiterData.put("Email", newApplicant.getEmail());
         recruiterData.put("Rating", newApplicant.getRating());
@@ -115,7 +136,7 @@ public class RecruiterMainActivity extends AppCompatActivity {
                     newApplicant.setId(recruiterData.getObjectId());
                     applicantList.add(newApplicant);
                     mAdapter.notifyDataSetChanged();
-                    viewApplicant(a, newApplicant);
+                    viewApplicant(newApplicant);
                 } else {
                     Toast.makeText(a, "Couldn't get new id!", Toast.LENGTH_LONG).show();
                 }
@@ -123,8 +144,8 @@ public class RecruiterMainActivity extends AppCompatActivity {
         });
     }
 
-    void viewApplicant(final Activity a, final ApplicantData newApplicant) {
-        Intent intent = new Intent(a, ViewApplicantActivity.class);
+    void viewApplicant(final ApplicantData newApplicant, int result) {
+        Intent intent = new Intent(this, ViewApplicantActivity.class);
         intent.putExtra(NAME, newApplicant.getName());
         intent.putExtra(EMAIL, newApplicant.getEmail());
         intent.putExtra(RATING, newApplicant.getRating());
@@ -133,6 +154,11 @@ public class RecruiterMainActivity extends AppCompatActivity {
         intent.putExtra(CLASS, companyClass);
         intent.putExtra(UI_STRING, uiString);
         intent.putExtra(PDF_URL, newApplicant.getUrl());
-        startActivity(intent);
+
+        startActivityForResult(intent, 2);
+    }
+
+    void viewApplicant(final ApplicantData newApplicant) {
+        viewApplicant(newApplicant, 0);
     }
 }

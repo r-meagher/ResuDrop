@@ -30,7 +30,7 @@ public class ShowQrCodeActivity extends AppCompatActivity {
 
         try {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix matrix = qrCodeWriter.encode(message, BarcodeFormat.QR_CODE, 200, 200);
+            BitMatrix matrix = qrCodeWriter.encode(message, BarcodeFormat.QR_CODE, 400, 400);
             imageView.setImageBitmap(toBitmap(matrix));
         } catch (WriterException ex) {
             ex.printStackTrace();

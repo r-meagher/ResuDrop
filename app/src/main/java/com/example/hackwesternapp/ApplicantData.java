@@ -43,8 +43,8 @@ class ApplicantData implements Comparable<ApplicantData>, Serializable {
         return rating;
     }
 
-    void toggleFavourite() {
-        favourite = !favourite;
+    void setFavourite(boolean b) {
+        favourite = b;
     }
 
     boolean isFavourite() {

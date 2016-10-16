@@ -2,13 +2,14 @@ package com.example.hackwesternapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.parse.ParseFile;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class RecruiterListAdapter extends RecyclerView.Adapter<RecruiterListAdap
         public TextView rating;
         public TextView name;
         public TextView email;
+        public ImageView favourite;
 
         public MyViewHolder(View view) {
             super(view);
@@ -29,26 +31,14 @@ public class RecruiterListAdapter extends RecyclerView.Adapter<RecruiterListAdap
             rating = (TextView) view.findViewById(R.id.rating);
             name = (TextView) view.findViewById(R.id.name);
             email = (TextView) view.findViewById(R.id.email);
+            favourite = (ImageView) view.findViewById(R.id.favourite);
         }
 
         @Override
         public void onClick(View view) {
-            Context c = view.getContext();
-            ApplicantData ad = applicantList.get(getAdapterPosition());
-
-            final String pClass = "AccountData";
-            final String uiString = "0";
-
-            Intent intent = new Intent(c, ViewApplicantActivity.class);
-            intent.putExtra(RecruiterMainActivity.NAME, ad.getName());
-            intent.putExtra(RecruiterMainActivity.EMAIL, ad.getEmail());
-            intent.putExtra(RecruiterMainActivity.RATING, ad.getRating());
-            intent.putExtra(RecruiterMainActivity.FAVOURITE, ad.isFavourite());
-            intent.putExtra(RecruiterMainActivity.ID, ad.getId());
-            intent.putExtra(RecruiterMainActivity.CLASS, pClass);
-            intent.putExtra(RecruiterMainActivity.UI_STRING, uiString);
-            intent.putExtra(PDF_URL, ad.getUrl());
-            c.startActivity(intent);
+            RecruiterMainActivity c = (RecruiterMainActivity) view.getContext();
+            c.clickedItem = getAdapterPosition();
+            c.viewApplicant(applicantList.get(getAdapterPosition()), 2);
         }
     }
 
@@ -70,6 +60,13 @@ public class RecruiterListAdapter extends RecyclerView.Adapter<RecruiterListAdap
         holder.rating.setText((String) ((ad.getRating() == 0) ? "" : ad.getRating()));
         holder.name.setText(ad.getName());
         holder.email.setText(ad.getEmail());
+
+        boolean favourite = applicantList.get(position).isFavourite();
+
+        if (favourite)
+            holder.favourite.setImageResource(RecruiterMainActivity.fav);
+        else
+            holder.favourite.setImageResource(RecruiterMainActivity.notfav);
     }
 
     @Override

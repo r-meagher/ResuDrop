@@ -8,15 +8,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class CustomUiFieldData {
-    public final int NUMBER = 0;
-    public final int BOOLEAN = 1;
-    public final int TEXT = 2;
-    public final int SPINNER = 3;
+    public static final int NUMBER = 0;
+    public static final int BOOLEAN = 1;
+    public static final int TEXT = 2;
 
     int type;
     String id;
     String text;
     ArrayList<String> optionalCommands;
+    View view;
 
     CustomUiFieldData(int type, String id, String text, ArrayList<String> optionalCommands) {
         this.type = type;
@@ -54,13 +54,14 @@ public class CustomUiFieldData {
             case TEXT:
                 view = factory.inflate(R.layout.custom_ui_text, null);
                 break;
-
-            case SPINNER:
-                view = factory.inflate(R.layout.custom_ui_spinner, null);
-                break;
         }
 
         ((TextView) view.findViewById(R.id.text)).setText(text);
+        this.view = view.findViewById(R.id.input);
+        return view;
+    }
+
+    View getInputView() {
         return view;
     }
 }

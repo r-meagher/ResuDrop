@@ -82,10 +82,12 @@ public class RecruiterMainActivity extends AppCompatActivity {
     // Get the results:
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.v("LOG", "RC: " + requestCode);
         if (requestCode == 2) {
-            applicantList.get(clickedItem).setRating(data.getIntExtra(RATING, 0));
-            applicantList.get(clickedItem).setFavourite(data.getBooleanExtra(FAVOURITE, false));
+            ApplicantData ad = applicantList.get(clickedItem);
+            Bundle extras = data.getExtras();
+
+            ad.setRating(extras.getInt(RATING));
+            ad.setFavourite(extras.getBoolean(FAVOURITE));
             mAdapter.notifyDataSetChanged();
         }
         else {

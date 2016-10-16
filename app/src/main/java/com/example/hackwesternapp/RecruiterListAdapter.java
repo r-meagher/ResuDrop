@@ -57,7 +57,7 @@ public class RecruiterListAdapter extends RecyclerView.Adapter<RecruiterListAdap
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         ApplicantData ad = applicantList.get(position);
-        holder.rating.setText((String) ((ad.getRating() == 0) ? "" : ad.getRating()));
+        holder.rating.setText((String) ((ad.getRating() == 0) ? "" : String.valueOf(ad.getRating())));
         holder.name.setText(ad.getName());
         holder.email.setText(ad.getEmail());
 

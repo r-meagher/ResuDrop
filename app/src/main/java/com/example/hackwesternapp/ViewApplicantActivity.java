@@ -13,6 +13,6 @@ public class ViewApplicantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_applicant);
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra(RecruiterMainActivity.APPLICANT_NAME);
+        String name = intent.getStringExtra(RecruiterMainActivity.APPLICANT_DATA);
     }
 }

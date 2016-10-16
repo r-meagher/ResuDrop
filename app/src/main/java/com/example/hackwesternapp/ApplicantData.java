@@ -1,12 +1,15 @@
 package com.example.hackwesternapp;
 
-class ApplicantData implements Comparable<ApplicantData> {
+import java.io.Serializable;
+
+class ApplicantData implements Comparable<ApplicantData>, Serializable {
     private String name;
     private String email;
+    private String id;
     private int rating;
     private boolean favourite;
 
-    public ApplicantData(String name, String email) {
+    public ApplicantData(String name, String email, String id) {
         this.name = name;
         this.email = email;
         this.favourite = false;
@@ -20,6 +23,8 @@ class ApplicantData implements Comparable<ApplicantData> {
     String getEmail() {
         return email;
     }
+
+    String getId() { return id; }
 
     void setRating(int rating) {
         if (rating < 0) rating = 0;

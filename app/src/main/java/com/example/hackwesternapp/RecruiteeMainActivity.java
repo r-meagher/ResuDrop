@@ -1,6 +1,7 @@
 package com.example.hackwesternapp;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,7 +12,6 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,10 +62,6 @@ public class RecruiteeMainActivity extends AppCompatActivity {
                     EncryptData ri = new EncryptData(tmp2[0], tmp2[1], tmp2[2], tmp2[3]);
                     resumeList.add(ri);
                     mAdapter.notifyDataSetChanged();
-
-                    ParseObject testObject = new ParseObject("TestObject");
-                    testObject.put("data", ri.getKey());
-                    testObject.saveInBackground();
                 }
             }
         } else {

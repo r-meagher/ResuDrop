@@ -39,12 +39,11 @@
         android:layout_alignLeft="@+id/name"
         android:layout_alignStart="@+id/name" />
 
-    <ImageButton android:id="@+id/favourite"
+    <ImageView android:id="@+id/favourite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_favourite_unselected"
         android:background="#00ffffff"
-        android:onClick="onToggleStar"
         android:clickable="true"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"

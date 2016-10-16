@@ -30,7 +30,7 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
             Context c = view.getContext();
             EncryptData ed = resumeList.get(getAdapterPosition());
             Intent intent = new Intent(c, ShowQrCodeActivity.class);
-            intent.putExtra(RecruiteeMainActivity.EXTRA_QR_STRING, ed.getKey() + "," + ed.getId());
+            intent.putExtra(RecruiteeMainActivity.EXTRA_QR_STRING, ed.getId());
             intent.putExtra(RecruiteeMainActivity.EXTRA_NAME, ed.getApplicantName());
             c.startActivity(intent);
         }

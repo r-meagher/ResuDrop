@@ -2,10 +2,8 @@ package com.example.hackwesternapp;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,28 +17,34 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.PriorityQueue;
 
 public class RecruiterMainActivity extends AppCompatActivity {
-    static final String APPLICANT_DATA = "com.example.hackwesternapp.APPLICANT_NAME";
-    static final String PDF_NAME = "com.example.hackwesternapp.PDF_NAME";
+    static final String NAME = "com.example.hackwesternapp.NAME";
+    static final String EMAIL = "com.example.hackwesternapp.EMAIL";
+    static final String RATING = "com.example.hackwesternapp.RATING";
+    static final String FAVOURITE = "com.example.hackwesternapp.FAVOURITE";
+    static final String ID = "com.example.hackwesternapp.ID";
+    static final String CLASS = "com.example.hackwesternapp.CLASS";
+    static final String UI_STRING = "com.example.hackwesternapp.UI_STRING";
+    static final String PDF_URL = "com.example.hackwesternapp.PDF_URL";
+
+    final String pClass = "AccountData";
 
     private List<ApplicantData> applicantList;
     private RecyclerView recyclerView;
     private RecruiterListAdapter mAdapter;
 
-    private SQLiteDatabase applicantDatabase;
+    private String uiString;
+    private String companyClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recruiter_main);
-
-        applicantDatabase = openOrCreateDatabase("Applicant Database",MODE_PRIVATE,null);
 
         recyclerView = (RecyclerView) findViewById(R.id.applicant_list_view);
         applicantList = new ArrayList<>();
@@ -50,6 +54,12 @@ public class RecruiterMainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+
+        Intent intent = getIntent();
+        String input = intent.getStringExtra(MainActivity.INPUT);
+        int index = input.indexOf((char) 03);
+        companyClass = input.substring(0, index);
+        uiString = input.substring(index + 1);
     }
 
     public void scanQrCode(View view) {
@@ -75,30 +85,54 @@ public class RecruiterMainActivity extends AppCompatActivity {
     }
 
     void getData(final Activity a, final String id) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("AccountData");
+        final ParseObject recruiterData = new ParseObject(companyClass);
+        final ApplicantData newApplicant = new ApplicantData("", "");
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(pClass);
         query.getInBackground(id, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
-                    ApplicantData newApplicant = new ApplicantData(object.getString("Name"), object.getString("Email"), id);
-                    applicantList.add(newApplicant);
-                    mAdapter.notifyDataSetChanged();
-
-                    // Create a recruiter-specific applicant
-                    ParseObject recruiterData = new ParseObject("RecruiterData");
-                    recruiterData.put("Name", newApplicant.getName());
-                    recruiterData.put("Email", newApplicant.getEmail());
-                    recruiterData.put("Rating", newApplicant.getRating());
-                    recruiterData.put("Favourite", newApplicant.isFavourite());
-                    recruiterData.saveInBackground();
-
-                    Intent intent = new Intent(a, ViewPdfActivity.class);
-                    intent.putExtra(PDF_NAME, ((ParseFile) object.get("data_pdf")).getUrl());
-                    startActivity(intent);
+                    newApplicant.setName(object.getString("Name"));
+                    newApplicant.setEmail(object.getString("Email"));
+                    newApplicant.setUrl(((ParseFile) object.get("data_pdf")).getUrl());
+                    pushToParse(a, recruiterData, newApplicant);
                 } else {
                     Toast.makeText(a, "Failed to get data", Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    void pushToParse(final Activity a, final ParseObject recruiterData, final ApplicantData newApplicant) {
+        recruiterData.put("Name", newApplicant.getName());
+        recruiterData.put("Email", newApplicant.getEmail());
+        recruiterData.put("Rating", newApplicant.getRating());
+        recruiterData.put("Favourite", newApplicant.isFavourite());
+        recruiterData.saveInBackground(new SaveCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    newApplicant.setId(recruiterData.getObjectId());
+                    applicantList.add(newApplicant);
+                    mAdapter.notifyDataSetChanged();
+                    viewApplicant(a, newApplicant);
+                } else {
+                    Toast.makeText(a, "Couldn't get new id!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    void viewApplicant(final Activity a, final ApplicantData newApplicant) {
+        Intent intent = new Intent(a, ViewApplicantActivity.class);
+        intent.putExtra(NAME, newApplicant.getName());
+        intent.putExtra(EMAIL, newApplicant.getEmail());
+        intent.putExtra(RATING, newApplicant.getRating());
+        intent.putExtra(FAVOURITE, newApplicant.isFavourite());
+        intent.putExtra(ID, newApplicant.getId());
+        intent.putExtra(CLASS, companyClass);
+        intent.putExtra(UI_STRING, uiString);
+        intent.putExtra(PDF_URL, newApplicant.getUrl());
+        startActivity(intent);
     }
 }

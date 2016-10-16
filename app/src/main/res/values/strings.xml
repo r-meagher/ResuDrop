@@ -12,4 +12,7 @@
     <string name="import_resume">Import resume</string>
 
     <string name="qr_display_description">Displays QR Codes</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="view_resume">View Resume</string>
 </resources>

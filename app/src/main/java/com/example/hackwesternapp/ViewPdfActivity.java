@@ -13,7 +13,7 @@ public class ViewPdfActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_pdf);
 
         Intent intent = getIntent();
-        String fileName = intent.getStringExtra(RecruiterMainActivity.PDF_NAME);
+        String fileName = intent.getStringExtra(RecruiterMainActivity.PDF_URL);
 
         WebView mWebView = new WebView(ViewPdfActivity.this);
         mWebView.getSettings().setJavaScriptEnabled(true);

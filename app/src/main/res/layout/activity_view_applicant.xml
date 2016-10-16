@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_view_applicant"
     android:layout_width="match_parent"
@@ -14,8 +15,81 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
+        <LinearLayout
+            android:id="@+id/view_applicant_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name"
+                    android:id="@+id/name"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:textStyle="normal|bold"
+                    android:textSize="30sp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_favourite_unselected"
+                    android:id="@+id/favourite"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/transparent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email"
+                    android:id="@+id/email"
+                    android:textSize="20sp"
+                    android:layout_below="@+id/name"
+                    android:layout_alignParentStart="true" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:text="5"
+                    android:ems="10"
+                    android:id="@+id/rating"
+                    android:textSize="40sp"
+                    android:textAlignment="textEnd"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:text="/5"
+                    android:layout_width="176dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView"
+                    android:textSize="30sp"
+                    android:gravity="bottom" />
+
+            </LinearLayout>
+
+            <Button
+                android:text="@string/view_resume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="viewResume" />
+
+        </LinearLayout>
     </ScrollView>
+
 </RelativeLayout>

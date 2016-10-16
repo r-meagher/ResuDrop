@@ -6,10 +6,11 @@ class ApplicantData implements Comparable<ApplicantData>, Serializable {
     private String name;
     private String email;
     private String id;
+    private String url;
     private int rating;
     private boolean favourite;
 
-    public ApplicantData(String name, String email, String id) {
+    public ApplicantData(String name, String email) {
         this.name = name;
         this.email = email;
         this.favourite = false;
@@ -20,11 +21,17 @@ class ApplicantData implements Comparable<ApplicantData>, Serializable {
         return name;
     }
 
+    void setName(String s) { name = s; }
+
     String getEmail() {
         return email;
     }
 
+    void setEmail(String s) { email = s; }
+
     String getId() { return id; }
+
+    void setId(String s) { id = s; }
 
     void setRating(int rating) {
         if (rating < 0) rating = 0;
@@ -43,6 +50,10 @@ class ApplicantData implements Comparable<ApplicantData>, Serializable {
     boolean isFavourite() {
         return favourite;
     }
+
+    String getUrl() { return url; }
+
+    void setUrl(String s) { url = s; }
 
     @Override
     public int compareTo(ApplicantData ad) {
